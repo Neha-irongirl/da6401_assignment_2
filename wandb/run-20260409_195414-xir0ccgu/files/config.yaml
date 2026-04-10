@@ -1,0 +1,80 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            3mtifhoc1sn0zq6va9knxgbxe2omqwxz:
+                args:
+                    - --task
+                    - segmentation
+                    - --epochs
+                    - "30"
+                    - --lr
+                    - "1e-4"
+                    - --batch_size
+                    - "8"
+                    - --freeze_seg
+                    - none
+                cpu_count: 1
+                cpu_count_logical: 2
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "120942624768"
+                        used: "49914380288"
+                email: ma24m018@smail.iitm.ac.in
+                executable: /usr/bin/python3
+                git:
+                    commit: da0da84cf013265f5b103d6fbf9a1a49a656da51
+                    remote: https://github.com/MiRL-IITM/da6401_assignment_2
+                gpu: Tesla T4
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Turing
+                      cudaCores: 2560
+                      memoryTotal: "16106127360"
+                      name: Tesla T4
+                      uuid: GPU-420b97b3-bdaa-02a7-afbc-44efd8b393d2
+                host: f14e85cf3436
+                memory:
+                    total: "13605826560"
+                os: Linux-6.6.113+-x86_64-with-glibc2.35
+                program: /content/da6401_assignment_2/train.py
+                python: CPython 3.12.13
+                root: /content/drive/MyDrive/da6401_assignment_2
+                startedAt: "2026-04-09T19:54:14.411041Z"
+                writerId: 3mtifhoc1sn0zq6va9knxgbxe2omqwxz
+        m: []
+        python_version: 3.12.13
+        t:
+            "1":
+                - 1
+                - 5
+                - 49
+                - 53
+                - 80
+                - 105
+            "2":
+                - 1
+                - 5
+                - 49
+                - 53
+                - 80
+                - 105
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.12.13
+            "5": 0.25.1
+            "12": 0.25.1
+            "13": linux-x86_64
+batch_size:
+    value: 8
+epochs:
+    value: 30
+freeze_backbone:
+    value: false
+lr:
+    value: 0.0001
+task:
+    value: segmentation

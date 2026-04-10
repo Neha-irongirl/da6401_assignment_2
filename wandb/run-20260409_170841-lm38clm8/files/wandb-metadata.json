@@ -1,0 +1,38 @@
+{
+  "os": "Linux-6.6.113+-x86_64-with-glibc2.35",
+  "python": "CPython 3.12.13",
+  "startedAt": "2026-04-09T17:08:41.908290Z",
+  "args": [
+    "--task",
+    "segmentation",
+    "--epochs",
+    "30",
+    "--lr",
+    "1e-4",
+    "--batch_size",
+    "16",
+    "--freeze_seg",
+    "none"
+  ],
+  "program": "/content/da6401_assignment_2/train.py",
+  "git": {
+    "remote": "https://github.com/MiRL-IITM/da6401_assignment_2",
+    "commit": "da0da84cf013265f5b103d6fbf9a1a49a656da51"
+  },
+  "email": "ma24m018@smail.iitm.ac.in",
+  "root": "/content/drive/MyDrive/da6401_assignment_2",
+  "host": "87dddf47fe5c",
+  "executable": "/usr/bin/python3",
+  "cpu_count": 1,
+  "cpu_count_logical": 2,
+  "disk": {
+    "/": {
+      "total": "115658190848",
+      "used": "25027575808"
+    }
+  },
+  "memory": {
+    "total": "13605834752"
+  },
+  "writerId": "5xclhx3daubr9wimk9r5n56kh85ym4pn"
+}

@@ -1,0 +1,80 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            iogihwaaxq87awf9v9b8wqqe5tpbkrmz:
+                args:
+                    - --task
+                    - classification
+                    - --epochs
+                    - "30"
+                    - --lr
+                    - "1e-3"
+                    - --batch_size
+                    - "32"
+                    - --dropout_p
+                    - "0.5"
+                cpu_count: 1
+                cpu_count_logical: 2
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "120942624768"
+                        used: "48966033408"
+                email: ma24m018@smail.iitm.ac.in
+                executable: /usr/bin/python3
+                git:
+                    commit: da0da84cf013265f5b103d6fbf9a1a49a656da51
+                    remote: https://github.com/MiRL-IITM/da6401_assignment_2
+                gpu: Tesla T4
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Turing
+                      cudaCores: 2560
+                      memoryTotal: "16106127360"
+                      name: Tesla T4
+                      uuid: GPU-fb8ff359-f133-743a-116a-b841016b7f4b
+                host: 01bdd5c5869a
+                memory:
+                    total: "13605826560"
+                os: Linux-6.6.113+-x86_64-with-glibc2.35
+                program: /content/da6401_assignment_2/train.py
+                python: CPython 3.12.13
+                root: /content/drive/MyDrive/da6401_assignment_2
+                startedAt: "2026-04-09T12:28:33.973291Z"
+                writerId: iogihwaaxq87awf9v9b8wqqe5tpbkrmz
+        m: []
+        python_version: 3.12.13
+        t:
+            "1":
+                - 1
+                - 5
+                - 49
+                - 53
+                - 80
+                - 105
+            "2":
+                - 1
+                - 5
+                - 49
+                - 53
+                - 80
+                - 105
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.12.13
+            "5": 0.25.1
+            "12": 0.25.1
+            "13": linux-x86_64
+batch_size:
+    value: 32
+dropout_p:
+    value: 0.5
+epochs:
+    value: 30
+lr:
+    value: 0.001
+task:
+    value: classification

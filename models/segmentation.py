@@ -1,128 +1,146 @@
+"""Segmentation model"""
 
 import torch
 import torch.nn as nn
-from models.vgg11 import VGG11Encoder
 
 
-class DoubleConv(nn.Module):
-    """Two Conv→BN→ReLU blocks (standard U-Net decoder unit)."""
-    def __init__(self, in_ch, out_ch):
+class VGG11UNet(nn.Module):
+    def __init__(
+        self,
+        num_classes: int = 3,
+        in_channels: int = 3,
+        dropout_p: float = 0.5
+    ):
         super().__init__()
-        self.block = nn.Sequential(
-            nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(out_ch),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(out_ch, out_ch, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(out_ch),
+
+        self.enc1 = nn.Sequential(
+            nn.Conv2d(in_channels, 64, 3, padding=1),
+            nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
         )
 
-    def forward(self, x):
-        return self.block(x)
+        self.enc2 = nn.Sequential(
+            nn.Conv2d(64, 128, 3, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(inplace=True),
+        )
 
+        self.enc3 = nn.Sequential(
+            nn.Conv2d(128, 256, 3, padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(256, 256, 3, padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(inplace=True),
+        )
 
-class SegmentationModel(nn.Module):
-    """
-    U-Net style semantic segmentation using VGG11 as the encoder.
+        self.enc4 = nn.Sequential(
+            nn.Conv2d(256, 512, 3, padding=1),
+            nn.BatchNorm2d(512),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(512, 512, 3, padding=1),
+            nn.BatchNorm2d(512),
+            nn.ReLU(inplace=True),
+        )
 
-    Architecture:
-      Encoder  = VGG11 convolutional blocks (5 blocks with MaxPool)
-      Decoder  = Symmetric expansive path using ConvTranspose2d (NO bilinear)
-      Skip connections: each decoder stage concatenates the matching encoder output
+        self.enc5 = nn.Sequential(
+            nn.Conv2d(512, 512, 3, padding=1),
+            nn.BatchNorm2d(512),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(512, 512, 3, padding=1),
+            nn.BatchNorm2d(512),
+            nn.ReLU(inplace=True),
+        )
 
-    Loss choice: CrossEntropyLoss
-      Reason: trimap has 3 discrete classes (foreground/background/boundary).
-      CrossEntropy is natural for multi-class pixel classification and handles
-      class imbalance better than MSE. We optionally add Dice loss on top
-      for improved boundary sensitivity.
+        self.pool = nn.MaxPool2d(2)
 
-    num_classes=3 for Oxford trimaps (foreground, background, boundary).
-    """
+        self.up5 = nn.ConvTranspose2d(512, 256, 2, stride=2)
+        self.dec5 = nn.Sequential(
+            nn.Conv2d(768, 256, 3, padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(inplace=True),
+        )
 
-    def __init__(self, num_classes=3, pretrained_path=None, freeze_mode='partial'):
-        """
-        freeze_mode:
-          'full'    — freeze entire VGG11 backbone
-          'partial' — freeze blocks 1-2 only, fine-tune blocks 3-5
-          'none'    — fine-tune entire backbone end-to-end
-        """
-        super().__init__()
+        self.up4 = nn.ConvTranspose2d(256, 128, 2, stride=2)
+        self.dec4 = nn.Sequential(
+            nn.Conv2d(384, 128, 3, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(inplace=True),
+        )
 
-        vgg = VGG11(num_classes=37)
-        if pretrained_path:
-            vgg.load_state_dict(
-                torch.load(pretrained_path, map_location='cpu')
-            )
-            print(f"Loaded backbone from: {pretrained_path}")
+        self.up3 = nn.ConvTranspose2d(128, 64, 2, stride=2)
+        self.dec3 = nn.Sequential(
+            nn.Conv2d(192, 64, 3, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True),
+        )
 
-        # ---- Encoder: 5 VGG11 blocks ----
-        feat = list(vgg.features.children())
-        self.enc1 = nn.Sequential(*feat[0:4])    # → (B, 64,  112, 112)
-        self.enc2 = nn.Sequential(*feat[4:8])    # → (B, 128,  56,  56)
-        self.enc3 = nn.Sequential(*feat[8:15])   # → (B, 256,  28,  28)
-        self.enc4 = nn.Sequential(*feat[15:22])  # → (B, 512,  14,  14)
-        self.enc5 = nn.Sequential(*feat[22:29])  # → (B, 512,   7,   7)
+        self.up2 = nn.ConvTranspose2d(64, 32, 2, stride=2)
+        self.dec2 = nn.Sequential(
+            nn.Conv2d(96, 32, 3, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(inplace=True),
+        )
 
-        # Apply freezing strategy
-        if freeze_mode == 'full':
-            for enc in [self.enc1, self.enc2, self.enc3, self.enc4, self.enc5]:
-                for p in enc.parameters():
-                    p.requires_grad = False
-            print("Encoder: fully frozen")
-        elif freeze_mode == 'partial':
-            for enc in [self.enc1, self.enc2]:
-                for p in enc.parameters():
-                    p.requires_grad = False
-            print("Encoder: blocks 1-2 frozen, blocks 3-5 fine-tuned")
+        self.final_conv = nn.Conv2d(32, num_classes, 1)
+
+    def load_pretrained_backbone(self, classifier_path: str, freeze: str = "none"):
+        state_dict = torch.load(classifier_path, map_location="cpu")
+
+        block_map = {
+            "enc1": [0, 1, 2],
+            "enc2": [4, 5, 6],
+            "enc3": [8, 9, 10, 11, 12, 13],
+            "enc4": [15, 16, 17, 18, 19, 20],
+            "enc5": [22, 23, 24, 25, 26, 27],
+        }
+
+        layer_fields = [
+            "weight", "bias",
+            "running_mean", "running_var",
+            "num_batches_tracked"
+        ]
+
+        for name, idxs in block_map.items():
+            module = getattr(self, name)
+            for local_idx, global_idx in enumerate(idxs):
+                layer = module[local_idx]
+                for field in layer_fields:
+                    key = f"features.{global_idx}.{field}"
+                    if key in state_dict and hasattr(layer, field):
+                        try:
+                            getattr(layer, field).data.copy_(state_dict[key])
+                        except Exception:
+                            continue
+
+        if freeze == "all":
+            freeze_blocks = [self.enc1, self.enc2, self.enc3, self.enc4, self.enc5]
+        elif freeze == "partial":
+            freeze_blocks = [self.enc1, self.enc2, self.enc3]
         else:
-            print("Encoder: fully fine-tuned (end-to-end)")
+            freeze_blocks = []
 
-        # ---- Decoder: ConvTranspose2d upsampling + skip concat ----
-        # Level 5 → 4:  7×7  → 14×14
-        self.up5   = nn.ConvTranspose2d(512, 512, kernel_size=2, stride=2)
-        self.dec5  = DoubleConv(512 + 512, 512)   # 512 up + 512 skip
+        for block in freeze_blocks:
+            for param in block.parameters():
+                param.requires_grad = False
 
-        # Level 4 → 3:  14×14 → 28×28
-        self.up4   = nn.ConvTranspose2d(512, 256, kernel_size=2, stride=2)
-        self.dec4  = DoubleConv(256 + 256, 256)   # 256 up + 256 skip
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        skip1 = self.enc1(x)
+        skip2 = self.enc2(self.pool(skip1))
+        skip3 = self.enc3(self.pool(skip2))
+        skip4 = self.enc4(self.pool(skip3))
+        bottleneck = self.enc5(self.pool(skip4))
 
-        # Level 3 → 2:  28×28 → 56×56
-        self.up3   = nn.ConvTranspose2d(256, 128, kernel_size=2, stride=2)
-        self.dec3  = DoubleConv(128 + 128, 128)   # 128 up + 128 skip
+        up = self.up5(bottleneck)
+        up = self.dec5(torch.cat([up, skip4], dim=1))
 
-        # Level 2 → 1:  56×56 → 112×112
-        self.up2   = nn.ConvTranspose2d(128, 64, kernel_size=2, stride=2)
-        self.dec2  = DoubleConv(64 + 64, 64)      # 64 up + 64 skip
+        up = self.up4(up)
+        up = self.dec4(torch.cat([up, skip3], dim=1))
 
-        # Level 1 → 0:  112×112 → 224×224
-        self.up1   = nn.ConvTranspose2d(64, 32, kernel_size=2, stride=2)
-        self.dec1  = DoubleConv(32, 32)
+        up = self.up3(up)
+        up = self.dec3(torch.cat([up, skip2], dim=1))
 
-        # Final 1×1 conv → class logits per pixel
-        self.final_conv = nn.Conv2d(32, num_classes, kernel_size=1)
+        up = self.up2(up)
+        up = self.dec2(torch.cat([up, skip1], dim=1))
 
-    def forward(self, x):
-        # Encoder
-        s1 = self.enc1(x)   # (B, 64,  112, 112)
-        s2 = self.enc2(s1)  # (B, 128,  56,  56)
-        s3 = self.enc3(s2)  # (B, 256,  28,  28)
-        s4 = self.enc4(s3)  # (B, 512,  14,  14)
-        s5 = self.enc5(s4)  # (B, 512,   7,   7)
-
-        # Decoder with skip connections
-        x = self.up5(s5)                          # → (B, 512, 14, 14)
-        x = self.dec5(torch.cat([x, s4], dim=1))  # concat skip s4
-
-        x = self.up4(x)                           # → (B, 256, 28, 28)
-        x = self.dec4(torch.cat([x, s3], dim=1))  # concat skip s3
-
-        x = self.up3(x)                           # → (B, 128, 56, 56)
-        x = self.dec3(torch.cat([x, s2], dim=1))  # concat skip s2
-
-        x = self.up2(x)                           # → (B, 64, 112, 112)
-        x = self.dec2(torch.cat([x, s1], dim=1))  # concat skip s1
-
-        x = self.up1(x)                           # → (B, 32, 224, 224)
-        x = self.dec1(x)
-
-        return self.final_conv(x)                 # (B, num_classes, 224, 224)
+        return self.final_conv(up)

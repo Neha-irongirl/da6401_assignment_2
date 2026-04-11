@@ -4,7 +4,7 @@ import torch.nn as nn
 from models.layers import CustomDropout
 
 
-class VGG11(nn.Module):
+class VGG11Encoder(nn.Module):
     """
     VGG11 from scratch following Simonyan & Zisserman (arXiv:1409.1556).
     Modifications:

@@ -1,18 +1,27 @@
 
+
 import torch
 import torch.nn as nn
-from models.vgg11 import VGG11
+from models.vgg11 import VGG11Encoder
 
 
-class ClassificationModel(nn.Module):
-    """
-    Thin wrapper around VGG11 for the 37-class pet breed classification task.
-    This class exists so train.py can import it consistently across all tasks.
-    """
+class VGG11Classifier(nn.Module):
+    """Full classifier = VGG11Encoder backbone + classification head."""
 
-    def __init__(self, num_classes=37, dropout_p=0.5):
+    def __init__(self, num_classes: int = 37,
+                 in_channels: int = 3,
+                 dropout_p: float = 0.5):
         super().__init__()
-        self.model = VGG11(num_classes=num_classes, dropout_p=dropout_p)
 
-    def forward(self, x):
-        return self.model(x)
+        encoder         = VGG11Encoder(num_classes=num_classes,
+                                       dropout_p=dropout_p)
+        self.features   = encoder.features
+        self.avgpool    = encoder.avgpool
+        self.classifier = encoder.classifier
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.features(x)
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        x = self.classifier(x)
+        return x

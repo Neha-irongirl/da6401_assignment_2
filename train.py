@@ -12,7 +12,7 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from data.pets_dataset import PetsDataset
-from models.classification import ClassificationModel
+from models.classification import VGG11Encoder
 from models.localization import LocalizationModel
 from models.segmentation import SegmentationModel
 from losses.iou_loss import IoULoss

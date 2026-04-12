@@ -1,0 +1,50 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            gv0ks09k8njc9o4tg7pjadztf1zcbkqk:
+                codePath: report\section_2.5.py
+                codePathLocal: section_2.5.py
+                cpu_count: 4
+                cpu_count_logical: 8
+                disk:
+                    /:
+                        total: "180007989248"
+                        used: "174225162240"
+                email: ma24m018@smail.iitm.ac.in
+                executable: C:\Users\Ganga Sharan\AppData\Local\Programs\Python\Python313\python.exe
+                git:
+                    commit: e3d9f2cddf1ecdc993a3a5a72b35cde071925951
+                    remote: https://github.com/Neha-irongirl/da6401_assignment_2
+                host: LAPTOP-BQBRQ1PT
+                memory:
+                    total: "12593659904"
+                os: Windows-11-10.0.26200-SP0
+                program: C:\Users\Ganga Sharan\OneDrive\dl_project\da6401_assignment_2\report\section_2.5.py
+                python: CPython 3.13.3
+                root: C:\Users\Ganga Sharan\OneDrive\dl_project\da6401_assignment_2\report
+                startedAt: "2026-04-12T18:29:49.917539Z"
+                writerId: gv0ks09k8njc9o4tg7pjadztf1zcbkqk
+        m: []
+        python_version: 3.13.3
+        t:
+            "1":
+                - 1
+                - 80
+            "2":
+                - 1
+                - 80
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.13.3
+            "5": 0.25.1
+            "8":
+                - 3
+            "12": 0.25.1
+            "13": windows-amd64
+num_images:
+    value: 10
+section:
+    value: "2.5"

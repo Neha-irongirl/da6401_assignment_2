@@ -139,7 +139,7 @@ Make sure your README includes:
 
 Zip the project and submit on **Gradescope**.
 
-> ⚠️ **Do NOT delete** the above created Drive folder till Assignment 2 marks are released.
+>  **Do NOT delete** the above created Drive folder till Assignment 2 marks are released.
 
 
 # Contact

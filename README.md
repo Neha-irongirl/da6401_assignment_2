@@ -4,8 +4,8 @@ This repository is an instructional skeleton for building the complete visual pe
 # Neha Rana (MA24M018)
 # M.Tech (Industrial Mathematics and Scientific Computing) IIT Madras
 
-[Wandb Report Link](https://wandb.ai/ma24m018-iit-ma/da6401-assignment2/reports/MA24M018_DA6401_A2--VmlldzoxNjQ5MzEyMw)
-[Github Repository Link](https://github.com/Neha-irongirl/da6401_assignment_2.git)
+# [Wandb Report Link](https://wandb.ai/ma24m018-iit-ma/da6401-assignment2/reports/MA24M018_DA6401_A2--VmlldzoxNjQ5MzEyMw)
+# [Github Repository Link](https://github.com/Neha-irongirl/da6401_assignment_2.git)
 
 
 ### ADDITIONAL INSTRUCTIONS FOR ASSIGNMENT2:

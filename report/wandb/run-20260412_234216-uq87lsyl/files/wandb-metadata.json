@@ -1,0 +1,28 @@
+{
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "CPython 3.13.3",
+  "startedAt": "2026-04-12T18:12:16.294068Z",
+  "program": "C:\\Users\\Ganga Sharan\\OneDrive\\dl_project\\da6401_assignment_2\\report\\section_2_8.py",
+  "codePath": "report\\section_2_8.py",
+  "codePathLocal": "section_2_8.py",
+  "git": {
+    "remote": "https://github.com/Neha-irongirl/da6401_assignment_2",
+    "commit": "9ecb50b573b876c8512cacb220d73f7943e36993"
+  },
+  "email": "ma24m018@smail.iitm.ac.in",
+  "root": "C:\\Users\\Ganga Sharan\\OneDrive\\dl_project\\da6401_assignment_2\\report",
+  "host": "LAPTOP-BQBRQ1PT",
+  "executable": "C:\\Users\\Ganga Sharan\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "cpu_count": 4,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "180007989248",
+      "used": "174210134016"
+    }
+  },
+  "memory": {
+    "total": "12593659904"
+  },
+  "writerId": "r5xu3kanymoed004vix53b11bl7na44m"
+}

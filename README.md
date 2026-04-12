@@ -1,6 +1,8 @@
-# DA6401 Assignment-2 Skeleton Guide
+ # DA6401 Assignment-2 Skeleton Guide
 
 This repository is an instructional skeleton for building the complete visual perception pipeline on Oxford-IIIT Pet.
+# Neha Rana (MA24M018)
+# M.Tech (Industrial Mathematics and Scientific Computing) IIT Madras
 
 
 ### ADDITIONAL INSTRUCTIONS FOR ASSIGNMENT2:

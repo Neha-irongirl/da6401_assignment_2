@@ -1,0 +1,54 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            pk0pufjk67hrz9hbzukzussshlofenpn:
+                codePath: report\section_2_1.py
+                codePathLocal: section_2_1.py
+                cpu_count: 4
+                cpu_count_logical: 8
+                disk:
+                    /:
+                        total: "180007989248"
+                        used: "176698359808"
+                email: ma24m018@smail.iitm.ac.in
+                executable: C:\Users\Ganga Sharan\AppData\Local\Programs\Python\Python313\python.exe
+                git:
+                    commit: 7548e42a1e3a4d9083dd7e08f17c0cb2a1ba2eca
+                    remote: https://github.com/Neha-irongirl/da6401_assignment_2
+                host: LAPTOP-BQBRQ1PT
+                memory:
+                    total: "12593659904"
+                os: Windows-11-10.0.26200-SP0
+                program: C:\Users\Ganga Sharan\OneDrive\dl_project\da6401_assignment_2\report\section_2_1.py
+                python: CPython 3.13.3
+                root: C:\Users\Ganga Sharan\OneDrive\dl_project\da6401_assignment_2\report
+                startedAt: "2026-04-12T04:26:22.741770Z"
+                writerId: pk0pufjk67hrz9hbzukzussshlofenpn
+        m: []
+        python_version: 3.13.3
+        t:
+            "1":
+                - 1
+                - 80
+            "2":
+                - 1
+                - 80
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.13.3
+            "5": 0.25.1
+            "8":
+                - 3
+            "12": 0.25.1
+            "13": windows-amd64
+batch_size:
+    value: 32
+layer:
+    value: 3rd Conv Layer
+section:
+    value: "2.1"
+split:
+    value: val

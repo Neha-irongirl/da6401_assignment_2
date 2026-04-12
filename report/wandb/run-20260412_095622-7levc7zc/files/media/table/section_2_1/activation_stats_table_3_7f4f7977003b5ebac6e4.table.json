@@ -1,0 +1,1 @@
+{"columns": ["Model", "Mean", "Std", "Min", "Max"], "data": [["With BatchNorm", -2.0891, 4.3713, -57.4541, 45.4423], ["Without BatchNorm", 0.0025, 0.1316, -1.0477, 1.078]]}
